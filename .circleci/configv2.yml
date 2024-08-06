@@ -1,0 +1,73 @@
+version: 2.1
+
+jobs:
+  # Job to build and start the app
+  build-and-start-app:
+    docker:
+      - image: cimg/node:16.20
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            npm install
+      - run:
+          name: Start Application
+          command: |
+            npm start &
+          background: true
+      # - run:
+      #     name: Wait for Application to Start
+      #     command: |
+      #       set -e
+      #       echo "Waiting for the application to start..."
+      #       while true; do
+      #         response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000)
+      #         if [ "$response" -eq 200 ]; then
+      #           echo "Application is running and returned HTTP $response"
+      #           break
+      #         else
+      #           echo "Application is not ready yet (HTTP $response). Retrying..."
+      #           sleep 1
+      #         fi
+      #       done
+      #     timeout: 180
+      # name: Wait for Application to Start
+      # command: |
+      #   # Wait until the application is accessible (replace with actual endpoint)
+      #   while ! curl -s http://localhost:3000 > /dev/null; do sleep 1; done
+      # timeout: 180
+
+  # Job to run Cypress tests
+  run-cypress-tests:
+    docker:
+      - image: cypress/base:12
+    steps:
+      - checkout
+      - run:
+          name: Install xvfb
+          command: |
+            apt-get update
+            apt-get install -y xvfb
+      - run:
+          name: Start Xvfb
+          command: |
+            Xvfb :99 -screen 0 1024x768x24 &
+            export DISPLAY=:99
+      - run:
+          name: Install Dependencies for Tests
+          command: |
+            npm install
+      - run:
+          name: Run Cypress Tests
+          command: |
+            npm run cypress:run
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build-and-start-app
+      - run-cypress-tests:
+          requires:
+            - build-and-start-app
