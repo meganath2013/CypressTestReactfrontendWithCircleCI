@@ -11,8 +11,7 @@ jobs:
           command: npm install
       - run:
           name: Start Application
-          command: |
-            npm run start &
+          command: npm run start &
       - run:
           name: Wait for App to be Ready
           command: |
