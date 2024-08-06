@@ -41,9 +41,19 @@ jobs:
   # Job to run Cypress tests
   run-cypress-tests:
     docker:
-      - image: cimg/node:16.20
+      - image: cypress/base:12
     steps:
       - checkout
+      - run:
+          name: Install xvfb
+          command: |
+            apt-get update
+            apt-get install -y xvfb
+      - run:
+          name: Start Xvfb
+          command: |
+            Xvfb :99 -screen 0 1024x768x24 &
+            export DISPLAY=:99
       - run:
           name: Install Dependencies for Tests
           command: |
