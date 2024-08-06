@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Start Application
           command: |
-            npm start > app.log 2>&1 &
+            npm run start &
       - run:
           name: Wait for App to be Ready
           command: |
@@ -20,12 +20,6 @@ jobs:
             timeout 10 bash -c "until curl -s http://localhost:3000 > /dev/null; do echo 'Waiting for app...'; sleep 1; done"
             echo "Finished waiting"
             set -e
-      - run:
-          name: Show Application Logs
-          command: |
-            cd ..
-            ls
-            cat app.log
       - run:
           name: Run Cypress Tests
           command: npx cypress run
