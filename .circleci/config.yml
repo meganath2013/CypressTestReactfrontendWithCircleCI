@@ -16,27 +16,27 @@ jobs:
           command: |
             npm start &
           background: true
-      - run:
-          name: Wait for Application to Start
-          command: |
-            set -e
-            echo "Waiting for the application to start..."
-            while true; do
-              response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000)
-              if [ "$response" -eq 200 ]; then
-                echo "Application is running and returned HTTP $response"
-                break
-              else
-                echo "Application is not ready yet (HTTP $response). Retrying..."
-                sleep 1
-              fi
-            done
-          timeout: 180
-          # name: Wait for Application to Start
-          # command: |
-          #   # Wait until the application is accessible (replace with actual endpoint)
-          #   while ! curl -s http://localhost:3000 > /dev/null; do sleep 1; done
-          # timeout: 180
+      # - run:
+      #     name: Wait for Application to Start
+      #     command: |
+      #       set -e
+      #       echo "Waiting for the application to start..."
+      #       while true; do
+      #         response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000)
+      #         if [ "$response" -eq 200 ]; then
+      #           echo "Application is running and returned HTTP $response"
+      #           break
+      #         else
+      #           echo "Application is not ready yet (HTTP $response). Retrying..."
+      #           sleep 1
+      #         fi
+      #       done
+      #     timeout: 180
+      # name: Wait for Application to Start
+      # command: |
+      #   # Wait until the application is accessible (replace with actual endpoint)
+      #   while ! curl -s http://localhost:3000 > /dev/null; do sleep 1; done
+      # timeout: 180
 
   # Job to run Cypress tests
   run-cypress-tests:
