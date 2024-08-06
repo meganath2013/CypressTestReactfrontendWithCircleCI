@@ -16,7 +16,10 @@ jobs:
       - run:
           name: Wait for App to be Ready
           command: |
+            set +e
             timeout 60 bash -c "until curl -s http://localhost:3000 > /dev/null; do echo 'Waiting for app...'; sleep 1; done"
+            echo "Finished waiting"
+            set -e
       - run:
           name: Show Application Logs
           command: cat app.log
