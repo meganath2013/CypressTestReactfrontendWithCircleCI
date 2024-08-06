@@ -23,9 +23,9 @@ jobs:
       - run:
           name: Show Application Logs
           command: |
-          cd ..
-          ls
-          cat app.log
+            cd ..
+            ls
+            cat app.log
       - run:
           name: Run Cypress Tests
           command: npx cypress run
