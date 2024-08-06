@@ -10,8 +10,7 @@ jobs:
       - run:
           name: Install Dependencies
           command: |
-            cd CypressTestReactfrontendWithCircleCI
-            npm install
+            ls
       - run:
           name: Start Application
           command: |
